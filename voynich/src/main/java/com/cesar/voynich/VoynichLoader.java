@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,9 +20,47 @@ public class VoynichLoader
 		Voynich voynich = new Voynich(); 
 		while((line = reader.readLine()) != null)
 		{
-			words = line.replace("!", "").replaceAll("\\<.*?\\>", "").trim().split("\\.");
+			if(line.length() < 5)
+				continue;
+			
+			
+			String code1 = " ";
+			String code2 = " ";
+			
+			if(line.indexOf("r") != -1)
+				code1 = line.substring(0, line.indexOf("r"));
+			else
+				code1 = "       ";
+			if(line.indexOf("v") != -1)
+				code2 = line.substring(0, line.indexOf("v"));
+			else
+				code2 = "       ";
+			
+			String code = code1.length() > code2.length() ? code2 : code1;
+			String pageValue = "";
+			for(char l : code.toCharArray())
+			{
+				try
+				{
+					Integer v = Integer.valueOf(String.valueOf(l));
+					pageValue += v;
+				}
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			
+			words = line.replaceAll("!", "")
+					.replaceAll("\\<.*?\\>", "")
+					.replaceAll(" ", "")
+					.replaceAll(",", "")
+					.replaceAll("\\*", "")
+					.trim()
+					.split("\\.");
 			List<String> list = convert(words);
 			voynich.words.addAll(list);
+			
+			voynich.pages.put(Integer.valueOf(pageValue), voynich.words.size());
 		}
 		
 		return voynich;

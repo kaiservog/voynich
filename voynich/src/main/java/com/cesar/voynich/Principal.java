@@ -11,7 +11,7 @@ public class Principal
 	public static void main(String[] args) throws IOException 
 	{
 		VoynichLoader loader = new VoynichLoader();
-		Voynich voynich = loader.load(new File("C:\\Users\\cvoginski\\Documents\\private\\Manuscrito.txt"));
+		Voynich voynich = loader.load(new File("/home/kaiser/Dev/Manuscrito.txt"));
 		
 		voynich.accept(new TratadorRepeticao());
 		
